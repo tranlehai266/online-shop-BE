@@ -8,7 +8,7 @@ const userSchema = Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
     address: { type: String, required: false },
-    contract: { type: String, required: false },
+    contact: { type: String, required: false },
     isDeleted: { type: Boolean, default: false, select: false },
   },
   { timestamps: true }

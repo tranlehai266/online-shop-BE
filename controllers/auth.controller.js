@@ -16,6 +16,7 @@ authController.loginWithEmail = catchAsync(async (req, res, next) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) throw new AppError(400, "Wrong Password", "Login Error");
   const accessToken = await user.generateToken();
+  console.log(accessToken)
   // response
   sendResponse(res, 200, true, { user, accessToken }, null, "Login Success");
 });

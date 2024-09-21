@@ -9,7 +9,7 @@ const validators = require("../middlewares/validators");
 const { loginRequired } = require("../middlewares/authentication");
 const router = express.Router();
 
-// đăng ký tài khoản
+// đăng ký tài khoản, /users
 router.post(
   "/",
   validators.validate([
@@ -22,10 +22,10 @@ router.post(
   ]),
   register
 );
-// lấy tài khoản
+// lấy tài khoản ,/users/profile
 router.get("/profile", loginRequired, getProfile);
 
-// thay đổi thông tin tài khoản
+// thay đổi thông tin tài khoản, /users/update
 router.put(
   "/update",
   validators.validate([

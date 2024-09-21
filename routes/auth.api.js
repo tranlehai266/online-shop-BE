@@ -5,7 +5,7 @@ const validators = require("../middlewares/validators");
 const { loginWithEmail } = require("../controllers/auth.controller");
 
 
-// đăng nhập tài khoản
+// đăng nhập tài khoản , /auth/login
 router.post(
   "/login",
   validators.validate([

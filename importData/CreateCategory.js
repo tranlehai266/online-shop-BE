@@ -1,4 +1,3 @@
-const fs = require("fs");
 const mongoose = require("mongoose");
 const csv = require("csvtojson");
 const Category = require("../models/Category");
@@ -15,15 +14,26 @@ const createCategory = async () => {
 
     const categoriesToInsert = [];
 
+    const desiredCategories = new Set([
+      "Chairs",
+      "Wardrobes",
+      "Tables & desks",
+      "Beds",
+    ]); // Các danh mục bạn muốn
+
     newData.forEach((data) => {
       const categoryName = data.category;
 
-      if (!existingNames.has(categoryName)) {
+      if (
+        desiredCategories.has(categoryName) &&
+        !existingNames.has(categoryName)
+      ) {
         existingNames.add(categoryName);
-        categoriesToInsert.push({ name: categoryName });
+        const imageUrl = `http://localhost:5000/images/${categoryName}.jpg`;
+        categoriesToInsert.push({ name: categoryName, images: imageUrl });
       }
     });
-
+    console.log(existingNames);
     await Category.insertMany(categoriesToInsert);
     console.log("Categories inserted successfully!");
   } catch (error) {

@@ -26,10 +26,10 @@ authentication.loginRequired = (req, res, next) => {
           throw new AppError(401, "Token is invalid", "Authentication Error");
         }
       }
-      console.log(payload)
+      console.log(payload);
       req.userId = payload._id;
+      next();
     });
-    next();
   } catch (error) {
     next(error);
   }

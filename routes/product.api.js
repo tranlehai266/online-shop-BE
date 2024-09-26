@@ -1,7 +1,9 @@
 const express = require("express");
-const { getProductByCategory } = require("../controllers/product.controller");
+const {
+  getProductByCategory,
+  getAllProducts,
+} = require("../controllers/product.controller");
 const router = express.Router();
-
 
 /**
  * @route get /product-category/:categoryId
@@ -10,5 +12,6 @@ const router = express.Router();
  */
 
 router.get("/:categoryId", getProductByCategory);
+router.get("/", getAllProducts);
 
 module.exports = router;

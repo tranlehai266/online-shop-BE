@@ -24,7 +24,7 @@ productController.getProductByCategory = catchAsync(async (req, res, next) => {
     .sort(sortCriteria);
 
   if (!products || products.length === 0) {
-    throw new AppError(400, "Not Found Product", "Nhập đúng product đi");
+    throw new AppError(400, "Not Found Product", "Nhập đúng product ");
   }
 
   sendResponse(
@@ -34,6 +34,30 @@ productController.getProductByCategory = catchAsync(async (req, res, next) => {
     products,
     null,
     "Products retrieved successfully"
+  );
+});
+
+productController.getAllProducts = catchAsync(async (req, res, next) => {
+  const limit = parseInt(req.query.limit);
+
+  const query = Product.find().populate("category");
+  if (limit) {
+    query.limit(limit);
+  }
+
+  const products = await query;
+
+  if (!products || products.length === 0) {
+    throw new AppError(400, "Not Found Product", "Không tìm thấy sản phẩm");
+  }
+
+  sendResponse(
+    res,
+    200,
+    true,
+    products,
+    null,
+    "All products retrieved successfully"
   );
 });
 

@@ -23,4 +23,6 @@ categoryController.getCategory = catchAsync(async (req, res, next) => {
   );
 });
 
+
+
 module.exports = categoryController;

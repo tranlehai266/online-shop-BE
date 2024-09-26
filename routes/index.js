@@ -10,8 +10,13 @@ router.use("/users", userApi);
 // categoryAPI
 const categoryApi = require("./category.api");
 router.use("/categories", categoryApi);
-// productAPi
+// productAPI
 const productApi = require("./product.api");
 router.use("/product-category", productApi);
-
+// cartAPI
+const cartApi = require("./cart.api");
+router.use("/cart", cartApi);
+// shoppingCart API
+const shoppingCart = require("./shoppingcart.api");
+router.use("/shoppingcart", shoppingCart);
 module.exports = router;

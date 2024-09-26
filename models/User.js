@@ -7,8 +7,15 @@ const userSchema = Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
+    role: {
+      type: String,
+      enum: ["admin", "user"], // Sửa lại thành mảng
+      default: "user",
+      required: true,
+    },
     address: { type: String, required: false },
     contact: { type: String, required: false },
+    isVerified: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false, select: false },
   },
   { timestamps: true }

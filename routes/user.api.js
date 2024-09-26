@@ -3,6 +3,7 @@ const {
   register,
   getProfile,
   updateProfile,
+  verifyCode,
 } = require("../controllers/user.controller");
 const { body } = require("express-validator");
 const validators = require("../middlewares/validators");
@@ -11,7 +12,7 @@ const router = express.Router();
 
 // đăng ký tài khoản, /users
 router.post(
-  "/",
+  "/register",
   validators.validate([
     body("name", "Invalid Name").exists().notEmpty(),
     body("email", "Invalid Email")
@@ -22,6 +23,8 @@ router.post(
   ]),
   register
 );
+// đăng ký tài khoản /users
+router.post("/verify-code", verifyCode);
 // lấy tài khoản ,/users/profile
 router.get("/profile", loginRequired, getProfile);
 

@@ -15,6 +15,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "./images")));
+app.use(
+  "/product-images",
+  express.static(path.join(__dirname, "./imagesProducts"))
+);
+
 app.use("/api", indexRouter);
 const mongoose = require("mongoose");
 const mongoURI = process.env.MONGODB_URI;

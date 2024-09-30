@@ -5,7 +5,7 @@ const productController = {};
 
 productController.getProductByCategory = catchAsync(async (req, res, next) => {
   const { categoryId } = req.params;
-  const { sort } = req.query;
+  const { sort, limit } = req.query;
 
   // Tạo một đối tượng chứa các tiêu chí sắp xếp
   const sortOptions = {
@@ -19,9 +19,12 @@ productController.getProductByCategory = catchAsync(async (req, res, next) => {
   // Lấy tiêu chí sắp xếp, nếu không có sẽ mặc định là không sắp xếp
   const sortCriteria = sortOptions[sort] || {};
 
+  const limitProducts = parseInt(limit) || 10;
+
   const products = await Product.find({ category: categoryId })
     .populate("category")
-    .sort(sortCriteria);
+    .sort(sortCriteria)
+    .limit(limitProducts);
 
   if (!products || products.length === 0) {
     throw new AppError(400, "Not Found Product", "Nhập đúng product ");
@@ -59,6 +62,18 @@ productController.getAllProducts = catchAsync(async (req, res, next) => {
     null,
     "All products retrieved successfully"
   );
+});
+
+productController.getProductById = catchAsync(async (req, res, next) => {
+  const { productId } = req.params;
+
+  const product = await Product.findById(productId).populate("category");
+
+  if (!product) {
+    throw new AppError(400, "Product Not Found", "Không tìm thấy sản phẩm");
+  }
+
+  sendResponse(res, 200, true, product, null, "Product retrieved successfully");
 });
 
 module.exports = productController;

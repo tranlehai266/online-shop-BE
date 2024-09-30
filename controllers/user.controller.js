@@ -40,7 +40,7 @@ userController.register = catchAsync(async (req, res, next) => {
     res,
     200,
     true,
-    { token },
+    { token, verificationCode },
     null,
     "Đã gửi email xác thực. Vui lòng kiểm tra hộp thư của bạn."
   );

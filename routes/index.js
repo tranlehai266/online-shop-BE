@@ -12,7 +12,7 @@ const categoryApi = require("./category.api");
 router.use("/categories", categoryApi);
 // productAPI
 const productApi = require("./product.api");
-router.use("/product-category", productApi);
+router.use("/products", productApi);
 // cartAPI
 const cartApi = require("./cart.api");
 router.use("/cart", cartApi);

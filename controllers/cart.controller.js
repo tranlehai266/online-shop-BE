@@ -6,7 +6,7 @@ const ShoppingCart = require("../models/ShoppingCart");
 const cartController = {};
 
 cartController.addToCart = catchAsync(async (req, res, next) => {
-  const { productId, quantity } = req.body;
+  const { productId, quantity, userId } = req.body;
 
   const product = await Product.findById(productId);
   if (!product) {
@@ -14,26 +14,28 @@ cartController.addToCart = catchAsync(async (req, res, next) => {
   }
 
   let shoppingCart = await ShoppingCart.findOne({
+    user_id: userId,
     status: "active",
   }).populate("items");
-
+  console.log(shoppingCart);
+  
   if (!shoppingCart) {
-    shoppingCart = await ShoppingCart.create({ items: [] });
+    shoppingCart = await ShoppingCart.create({ userId, items: [] });
   }
 
   // kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
   const existingItems = shoppingCart.items.filter(
     (item) => item.product.toString() === productId.toString()
   );
-
-  // quăng lỗi nếu sản phẩm đã tồn tại
+  console.log("exist", existingItems);
   if (existingItems.length > 0) {
-    throw new AppError(
-      400,
-      "Sản phẩm đã tồn tại trong giỏ hàng",
-      "Lỗi thêm vào giỏ hàng"
-    );
+    // Nếu sản phẩm đã tồn tại, cập nhật số lượng
+    const existingItem = existingItems[0]; // Lấy sản phẩm đã tồn tại
+    existingItem.quantity += quantity; // Cập nhật số lượng
+
+    await existingItem.save(); // Lưu lại
   } else {
+    // Nếu sản phẩm chưa tồn tại, thêm mới
     const cartItem = await CartItem.create({
       product: productId,
       quantity: quantity || 1,
@@ -42,7 +44,7 @@ cartController.addToCart = catchAsync(async (req, res, next) => {
 
     shoppingCart.items.push(cartItem);
     await shoppingCart.save();
-
+    console.log("shopping 47", shoppingCart);
     sendResponse(
       res,
       201,

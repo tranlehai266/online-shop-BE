@@ -4,6 +4,7 @@ const {
   getProfile,
   updateProfile,
   verifyCode,
+  resetPassword,
 } = require("../controllers/user.controller");
 const { body } = require("express-validator");
 const validators = require("../middlewares/validators");
@@ -27,8 +28,8 @@ router.post(
 router.post("/verify-code", verifyCode);
 // lấy tài khoản ,/users/profile
 router.get("/profile", loginRequired, getProfile);
-
-// thay đổi thông tin tài khoản, /users/update
+// reset mật khẩu
+router.post("/reset-password", resetPassword);
 router.put(
   "/update",
   validators.validate([
@@ -44,4 +45,5 @@ router.put(
   loginRequired,
   updateProfile
 );
+
 module.exports = router;

@@ -41,14 +41,31 @@ productController.getProductByCategory = catchAsync(async (req, res, next) => {
 });
 
 productController.getAllProducts = catchAsync(async (req, res, next) => {
-  const limit = parseInt(req.query.limit);
+  const { sort, limit, search } = req.query;
 
-  const query = Product.find().populate("category");
-  if (limit) {
-    query.limit(limit);
+  const sortOptions = {
+    default: { createdAt: -1 },
+    popularity: { popularity: -1 },
+    rating: { rating: -1 },
+    priceLowToHigh: { price: 1 },
+    priceHighToLow: { price: -1 },
+  };
+
+  const sortCriteria = sortOptions[sort] || {};
+  const limitProducts = parseInt(limit) ;
+
+  let query = {};
+
+  if (search) {
+    query.name = { $regex: search, $options: "i" };
+  } else {
+    query = {};
   }
 
-  const products = await query;
+  const products = await Product.find(query)
+    .populate("category")
+    .sort(sortCriteria)
+    .limit(limitProducts);
 
   if (!products || products.length === 0) {
     throw new AppError(400, "Not Found Product", "Không tìm thấy sản phẩm");

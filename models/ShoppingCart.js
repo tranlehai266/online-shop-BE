@@ -10,6 +10,7 @@ const shoppingCartSchema = new Schema(
       enum: ["active", "completed"],
       default: "active",
     },
+    orderId: { type: String, required: false },
   },
   { timestamps: true }
 );

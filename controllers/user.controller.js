@@ -29,12 +29,9 @@ userController.register = catchAsync(async (req, res, next) => {
   await sendMail(
     email,
     "Verified Account Funio ✔",
-    `<html>
-    <body>
-      <h1>Mã xác thực của bạn là: ${verificationCode}</h1>
-      <h4>Vui lòng sử dụng mã này để xác thực tài khoản của bạn.</h4>
-    </body>
-  </html>`
+    null,
+    `<h1>Your authentication code is: ${verificationCode}</h1>
+    <h4>Please use this code to authenticate your account.</h4>`
   );
   sendResponse(
     res,
@@ -42,7 +39,7 @@ userController.register = catchAsync(async (req, res, next) => {
     true,
     { token, verificationCode },
     null,
-    "Đã gửi email xác thực. Vui lòng kiểm tra hộp thư của bạn."
+    "Verification email sent. Please check your mailbox."
   );
 });
 
@@ -54,7 +51,11 @@ userController.verifyCode = catchAsync(async (req, res, next) => {
   const { name, email, hashedPassword, verificationCode } = decoded;
 
   if (code !== verificationCode) {
-    throw new AppError(400, "Mã xác thực không đúng", "Verification Error");
+    throw new AppError(
+      400,
+      "Authentication code is incorrect",
+      "Verification Error"
+    );
   }
 
   let user = await User.create({
@@ -70,7 +71,7 @@ userController.verifyCode = catchAsync(async (req, res, next) => {
     true,
     { user },
     null,
-    "Tài khoản đã được xác thực thành công."
+    "The account has been successfully authenticated."
   );
 });
 
@@ -84,6 +85,7 @@ userController.getProfile = catchAsync(async (req, res, next) => {
 
 userController.updateProfile = catchAsync(async (req, res, next) => {
   const currentUserId = req.userId;
+  console.log("req body", req.body);
   const { name, email, password, address, contact } = req.body;
 
   let user = await User.findById(currentUserId);
@@ -100,6 +102,43 @@ userController.updateProfile = catchAsync(async (req, res, next) => {
 
   await user.save();
   sendResponse(res, 200, true, user, null, "Profile updated successfully");
+});
+
+userController.resetPassword = catchAsync(async (req, res, next) => {
+  const { email } = req.body;
+
+  let user = await User.findOne({ email });
+  if (!user)
+    throw new AppError(404, "User does not exist", "Reset Password Error");
+
+  // Tạo mật khẩu mới ngẫu nhiên
+  const newPassword = Math.random().toString(36).slice(-8);
+
+  // Mã hóa mật khẩu mới
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+  // Cập nhật mật khẩu mới vào cơ sở dữ liệu
+  user.password = hashedPassword;
+  await user.save();
+
+  // Gửi mật khẩu mới qua email
+  await sendMail(
+    email,
+    "Reset Password Funio ✔",
+    null,
+    `<h1>Your new password is: ${newPassword}</h1>
+     <h4>Please log in with this new password and change your password immediately.</h4>`
+  );
+
+  sendResponse(
+    res,
+    200,
+    true,
+    null,
+    null,
+    "New password has been sent to your email. Please check your mailbox."
+  );
 });
 
 module.exports = userController;

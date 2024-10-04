@@ -1,5 +1,6 @@
 const ShoppingCart = require("../models/ShoppingCart");
 const { sendResponse, AppError, catchAsync } = require("../helpers/utils");
+const User = require("../models/User");
 
 const shoppingCartController = {};
 
@@ -25,9 +26,13 @@ shoppingCartController.getUserCart = catchAsync(async (req, res, next) => {
 });
 
 shoppingCartController.completePayment = catchAsync(async (req, res, next) => {
-  const { orderID } = req.body;
+  const { orderID, shippingAddress } = req.body;
   const userId = req.userId;
-  console.log(orderID);
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError(404, "Error ShoppingCart", "User not found");
+  }
 
   if (!orderID) {
     throw new AppError(400, "Error ShoppingCart", "Not Found Shoppingcart");
@@ -35,7 +40,7 @@ shoppingCartController.completePayment = catchAsync(async (req, res, next) => {
 
   let shoppingCart = await ShoppingCart.findOneAndUpdate(
     { user_id: userId, status: "active" },
-    { status: "completed", orderId: orderID },
+    { status: "completed", orderId: orderID, shippingAddress: user.address },
     { new: true }
   );
 
@@ -56,7 +61,7 @@ shoppingCartController.completePayment = catchAsync(async (req, res, next) => {
 shoppingCartController.getShoppingCartsByStatus = catchAsync(
   async (req, res, next) => {
     const userId = req.userId;
-    
+
     const shoppingCarts = await ShoppingCart.find({ user_id: userId }).populate(
       {
         path: "items",

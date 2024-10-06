@@ -6,7 +6,7 @@ const { sendResponse, AppError, catchAsync } = require("../helpers/utils");
 const categoryController = {};
 
 categoryController.getCategory = catchAsync(async (req, res, next) => {
-  const categories = await Category.find();
+  const categories = await Category.find({ isDeleted: false });
 
   if (!categories || categories.length === 0) {
     return next(new AppError("No categories found", 404));
@@ -22,7 +22,5 @@ categoryController.getCategory = catchAsync(async (req, res, next) => {
     "Categories retrieved successfully"
   );
 });
-
-
 
 module.exports = categoryController;

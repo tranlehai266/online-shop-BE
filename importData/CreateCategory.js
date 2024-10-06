@@ -4,7 +4,7 @@ const Category = require("../models/Category");
 
 const createCategory = async () => {
   try {
-    const mongoURI = "mongodb+srv://admin:123@cluster0.bxgya.mongodb.net/";
+    const mongoURI = process.env.MONGODB_URI;
 
     await mongoose.connect(mongoURI);
     console.log("Connected to Database!");

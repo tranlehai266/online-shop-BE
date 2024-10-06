@@ -19,4 +19,7 @@ router.use("/cart", cartApi);
 // shoppingCart API
 const shoppingCart = require("./shoppingcart.api");
 router.use("/shoppingcart", shoppingCart);
+// admin api
+const adminApi = require("./admin.api");
+router.use("/admin", adminApi);
 module.exports = router;

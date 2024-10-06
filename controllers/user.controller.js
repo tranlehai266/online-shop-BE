@@ -11,7 +11,7 @@ const generateVerificationCode = () => {
 };
 
 userController.register = catchAsync(async (req, res, next) => {
-  let { name, email, password } = req.body;
+  let { name, email, password, role } = req.body;
   let user = await User.findOne({ email });
   if (user) throw new AppError(400, "User already exists", "Register Error");
 
@@ -21,7 +21,7 @@ userController.register = catchAsync(async (req, res, next) => {
   const verificationCode = generateVerificationCode();
 
   const token = jwt.sign(
-    { name, email, hashedPassword, verificationCode },
+    { name, email, hashedPassword, verificationCode, role },
     process.env.JWT_SECRET_KEY,
     { expiresIn: "1h" }
   );
@@ -48,7 +48,7 @@ userController.verifyCode = catchAsync(async (req, res, next) => {
 
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-  const { name, email, hashedPassword, verificationCode } = decoded;
+  const { name, email, hashedPassword, verificationCode, role } = decoded;
 
   if (code !== verificationCode) {
     throw new AppError(
@@ -62,6 +62,7 @@ userController.verifyCode = catchAsync(async (req, res, next) => {
     email,
     name,
     password: hashedPassword,
+    role: role || "user",
     isVerified: true,
   });
 

@@ -21,7 +21,10 @@ productController.getProductByCategory = catchAsync(async (req, res, next) => {
 
   const limitProducts = parseInt(limit) || 10;
 
-  const products = await Product.find({ category: categoryId })
+  const products = await Product.find({
+    category: categoryId,
+    isDeleted: false,
+  })
     .populate("category")
     .sort(sortCriteria)
     .limit(limitProducts);
@@ -52,14 +55,14 @@ productController.getAllProducts = catchAsync(async (req, res, next) => {
   };
 
   const sortCriteria = sortOptions[sort] || {};
-  const limitProducts = parseInt(limit) ;
+  const limitProducts = parseInt(limit);
 
-  let query = {};
+  let query = { isDeleted: false };
 
   if (search) {
     query.name = { $regex: search, $options: "i" };
   } else {
-    query = {};
+    query = { isDeleted: false };
   }
 
   const products = await Product.find(query)

@@ -9,14 +9,14 @@ const userSchema = Schema(
     password: { type: String, required: true, select: false },
     role: {
       type: String,
-      enum: ["admin", "user"], // Sửa lại thành mảng
+      enum: ["admin", "user"],
       default: "user",
       required: true,
     },
     address: { type: String, required: false },
     contact: { type: String, required: false },
     isVerified: { type: Boolean, default: false },
-    isDeleted: { type: Boolean, default: false, select: false },
+    isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
@@ -24,7 +24,6 @@ const userSchema = Schema(
 userSchema.methods.toJSON = function () {
   const user = this._doc;
   delete user.password;
-  delete user.isDeleted;
   return user;
 };
 

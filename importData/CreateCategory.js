@@ -29,7 +29,7 @@ const createCategory = async () => {
         !existingNames.has(categoryName)
       ) {
         existingNames.add(categoryName);
-        const imageUrl = `http://localhost:5000/images/${categoryName}.jpg`;
+        const imageUrl = `${process.env.BACKEND_URI}/images/${categoryName}.jpg`;
         categoriesToInsert.push({ name: categoryName, images: imageUrl });
       }
     });

@@ -12,7 +12,7 @@ categoryController.getCategory = catchAsync(async (req, res, next) => {
     return next(new AppError("No categories found", 404));
   }
 
-  // Trả về phản hồi
+
   sendResponse(
     res,
     200,

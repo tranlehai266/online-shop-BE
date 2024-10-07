@@ -45,7 +45,7 @@ const createProduct = async () => {
         const category = await Category.findOne({ name: categoryName });
         const randomPopularity = Math.floor(Math.random() * 100);
         const randomRating = (Math.random() * 5).toFixed(1);
-        const imageUrl = `http://localhost:5000/product-images/${imageIndex}.jpg`;
+        const imageUrl = `${process.env.BACKEND_URI}/product-images/${imageIndex}.jpg`;
 
         // Tạo sản phẩm mới
         productsToInsert.push({

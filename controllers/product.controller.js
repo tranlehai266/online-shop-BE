@@ -7,7 +7,6 @@ productController.getProductByCategory = catchAsync(async (req, res, next) => {
   const { categoryId } = req.params;
   const { sort, limit } = req.query;
 
-  // Tạo một đối tượng chứa các tiêu chí sắp xếp
   const sortOptions = {
     default: { createdAt: -1 },
     popularity: { popularity: -1 },
@@ -16,8 +15,7 @@ productController.getProductByCategory = catchAsync(async (req, res, next) => {
     priceHighToLow: { price: -1 },
   };
 
-  // Lấy tiêu chí sắp xếp, nếu không có sẽ mặc định là không sắp xếp
-  const sortCriteria = sortOptions[sort] || {};
+  const sortCriteria = sortOptions[sort] || { createdAt: -1 };
 
   const limitProducts = parseInt(limit) || 10;
 

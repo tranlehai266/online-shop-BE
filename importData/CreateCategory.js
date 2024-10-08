@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const csv = require("csvtojson");
 const Category = require("../models/Category");
+require("dotenv").config({ path: "../.env" });
 
 const createCategory = async () => {
   try {

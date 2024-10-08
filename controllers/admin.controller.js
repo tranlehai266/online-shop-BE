@@ -3,7 +3,7 @@ const { sendResponse, AppError, catchAsync } = require("../helpers/utils");
 const ShoppingCart = require("../models/ShoppingCart");
 const Product = require("../models/Product");
 const Category = require("../models/Category");
-
+const { sendMail } = require("../middlewares/sendmail");
 const adminController = {};
 
 adminController.getAllUsers = catchAsync(async (req, res, next) => {
@@ -89,6 +89,19 @@ adminController.deleteCategory = catchAsync(async (req, res, next) => {
   if (!category) {
     throw new AppError(404, "Category not found", "Delete Category Error");
   }
+
+  const othersCategory = await Category.findOne({ name: "Others" });
+
+  if (!othersCategory) {
+    throw new AppError(
+      404,
+      "'Others' category not found",
+      "Delete Category Error"
+    );
+  }
+
+  await Product.updateMany({ category: id }, { category: othersCategory._id });
+
   sendResponse(res, 200, true, null, null, "Category deleted successfully.");
 });
 
@@ -172,43 +185,54 @@ adminController.createCategory = catchAsync(async (req, res, next) => {
 });
 
 adminController.createProduct = catchAsync(async (req, res, next) => {
-  const {
-    name,
-    item_id,
-    price,
-    old_price,
-    description,
-    image_url,
-    category,
-    popularity,
-    rating,
-  } = req.body;
+  const { name, item_id, price, old_price, description, image_url, category } =
+    req.body;
 
-
-  if (!name || !item_id || !price || !description || !category || !popularity || !rating) {
+  if (!name || !item_id || !price || !description || !category) {
     throw new AppError(400, "Missing required fields", "Create Product Error");
   }
 
-  
   const existingProduct = await Product.findOne({ item_id, isDeleted: false });
   if (existingProduct) {
-    throw new AppError(400, "Product with this item_id already exists", "Create Product Error");
+    throw new AppError(
+      400,
+      "Product with this item_id already exists",
+      "Create Product Error"
+    );
   }
 
-  
   const newProduct = await Product.create({
     name,
     item_id,
     price,
     old_price,
     description,
-    image_url: image_url || [],  
+    image_url: image_url || [],
     category,
-    popularity,
-    rating,
   });
 
-  sendResponse(res, 200, true, newProduct, null, "Product created successfully.");
+  sendResponse(
+    res,
+    200,
+    true,
+    newProduct,
+    null,
+    "Product created successfully."
+  );
+});
+
+adminController.sendMail = catchAsync(async (req, res, next) => {
+  const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+    throw new AppError(400, "All fields are required", "Send Mail Error");
+  }
+
+  const subject = `Message from ${name}`;
+  const text = `You have received a new message from ${name} (${email}):\n\n${message}`;
+  await sendMail("tranlehai2662000@gmail.com", subject, text);
+
+  sendResponse(res, 200, true, null, null, "Email sent successfully.");
 });
 
 module.exports = adminController;

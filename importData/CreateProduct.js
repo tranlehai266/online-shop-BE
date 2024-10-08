@@ -2,9 +2,11 @@ const mongoose = require("mongoose");
 const csv = require("csvtojson");
 const Product = require("../models/Product");
 const Category = require("../models/Category");
+require("dotenv").config({ path: "../.env" });
 
 const createProduct = async () => {
   try {
+    console.log("Mongo URI:", process.env.MONGODB_URI);
     const mongoURI = process.env.MONGODB_URI;
     await mongoose.connect(mongoURI);
     console.log("Connected to Database!");

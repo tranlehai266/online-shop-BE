@@ -10,8 +10,8 @@ const productSchema = Schema(
     description: { type: String, required: true },
     image_url: { type: String, required: true },
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
-    popularity: { type: Number, required: true },
-    rating: { type: Number, required: true },
+    popularity: { type: Number, required: false },
+    rating: { type: Number, required: false },
     isDeleted: { type: Boolean, default: false, select: false },
   },
   { timestamps: true }

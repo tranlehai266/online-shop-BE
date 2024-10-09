@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const { sendResponse, AppError, catchAsync } = require("../helpers/utils");
+const { OAuth2Client } = require("google-auth-library");
+require("dotenv").config({ path: "../.env" });
+
+const client = new OAuth2Client(process.env.CLIENT_ID);
 
 const authController = {};
 
@@ -24,6 +28,31 @@ authController.loginWithEmail = catchAsync(async (req, res, next) => {
 
   const accessToken = await user.generateToken();
   console.log(accessToken);
+  sendResponse(res, 200, true, { user, accessToken }, null, "Login Success");
+});
+
+authController.googleLogin = catchAsync(async (req, res, next) => {
+  const { googleToken } = req.body;
+
+  const ticket = await client.verifyIdToken({
+    idToken: googleToken,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+  console.log("TICKET", ticket);
+  const payload = ticket.payload;
+  console.log("PAYLOAD", payload);
+  let user = await User.findOne({ email: payload.email });
+  if (!user) {
+    user = new User({
+      name: payload.name,
+      email: payload.email,
+      isVerified: true,
+    });
+    await user.save();
+  }
+
+  const accessToken = await user.generateToken();
+
   sendResponse(res, 200, true, { user, accessToken }, null, "Login Success");
 });
 

@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { body } = require("express-validator");
 const validators = require("../middlewares/validators");
-const { loginWithEmail } = require("../controllers/auth.controller");
-
+const {
+  loginWithEmail,
+  googleLogin,
+} = require("../controllers/auth.controller");
 
 // đăng nhập tài khoản , /auth/login
 router.post(
@@ -17,5 +19,7 @@ router.post(
   ]),
   loginWithEmail
 );
+
+router.post("/google-login", googleLogin);
 
 module.exports = router;

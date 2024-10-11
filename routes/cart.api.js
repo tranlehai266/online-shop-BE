@@ -7,8 +7,8 @@ const {
 } = require("../controllers/cart.controller");
 const router = express.Router();
 
-router.post("/items", addToCart);
-router.put("/items", updateQuantity);
-router.delete("/items", deleteCartItem);
+router.post("/items", loginRequired, addToCart);
+router.put("/items", loginRequired, updateQuantity);
+router.delete("/items", loginRequired, deleteCartItem);
 
 module.exports = router;

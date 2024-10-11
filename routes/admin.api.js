@@ -11,16 +11,20 @@ const {
   createProduct,
   sendMail,
 } = require("../controllers/admin.controller");
+const {
+  loginRequired,
+  adminRequired,
+} = require("../middlewares/authentication");
 const router = express.Router();
 
-router.get("/users", getAllUsers);
-router.delete("/users/:id", deleteUser);
-router.get("/cart", getCartsByStatus);
-router.delete("/product/:id", deleteProduct);
-router.delete("/category/:id", deleteCategory);
-router.put("/product/:id", updateProduct);
-router.put("/category/:id", updateCategory);
-router.post("/category", createCategory);
-router.post("/product", createProduct)
-router.post("/contact", sendMail)
+router.get("/users", loginRequired, adminRequired, getAllUsers);
+router.delete("/users/:id", loginRequired, adminRequired, deleteUser);
+router.get("/cart", loginRequired, adminRequired, getCartsByStatus);
+router.delete("/product/:id", loginRequired, adminRequired, deleteProduct);
+router.delete("/category/:id", loginRequired, adminRequired, deleteCategory);
+router.put("/product/:id", loginRequired, adminRequired, updateProduct);
+router.put("/category/:id", loginRequired, adminRequired, updateCategory);
+router.post("/category", loginRequired, adminRequired, createCategory);
+router.post("/product", loginRequired, adminRequired, createProduct);
+router.post("/contact", sendMail);
 module.exports = router;

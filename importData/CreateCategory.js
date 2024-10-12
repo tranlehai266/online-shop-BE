@@ -34,9 +34,8 @@ const createCategory = async () => {
         categoriesToInsert.push({ name: categoryName, images: imageUrl });
       }
     });
-    console.log(existingNames);
+
     await Category.insertMany(categoriesToInsert);
-    console.log("Categories inserted successfully!");
   } catch (error) {
     console.log(error);
   }

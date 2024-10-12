@@ -17,8 +17,7 @@ cartController.addToCart = catchAsync(async (req, res, next) => {
     user_id: userId,
     status: "active",
   }).populate("items");
-  console.log(shoppingCart);
-  
+
   if (!shoppingCart) {
     shoppingCart = await ShoppingCart.create({ userId, items: [] });
   }
@@ -27,7 +26,7 @@ cartController.addToCart = catchAsync(async (req, res, next) => {
   const existingItems = shoppingCart.items.filter(
     (item) => item.product.toString() === productId.toString()
   );
-  console.log("exist", existingItems);
+ 
   if (existingItems.length > 0) {
     // Nếu sản phẩm đã tồn tại, cập nhật số lượng
     const existingItem = existingItems[0]; // Lấy sản phẩm đã tồn tại
@@ -44,7 +43,6 @@ cartController.addToCart = catchAsync(async (req, res, next) => {
 
     shoppingCart.items.push(cartItem);
     await shoppingCart.save();
-    console.log("shopping 47", shoppingCart);
     sendResponse(
       res,
       201,

@@ -15,7 +15,7 @@ authController.loginWithEmail = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   // validation
   const user = await User.findOne({ email }, "+password");
-  console.log(user);
+
   if (!user)
     throw new AppError(
       400,
@@ -27,7 +27,6 @@ authController.loginWithEmail = catchAsync(async (req, res, next) => {
   if (!isMatch) throw new AppError(400, "Wrong Password", "Login Error");
 
   const accessToken = await user.generateToken();
-  console.log(accessToken);
   sendResponse(res, 200, true, { user, accessToken }, null, "Login Success");
 });
 
@@ -38,9 +37,9 @@ authController.googleLogin = catchAsync(async (req, res, next) => {
     idToken: googleToken,
     audience: process.env.GOOGLE_CLIENT_ID,
   });
-  console.log("TICKET", ticket);
+
   const payload = ticket.payload;
-  console.log("PAYLOAD", payload);
+
   let user = await User.findOne({ email: payload.email });
   if (!user) {
     user = new User({

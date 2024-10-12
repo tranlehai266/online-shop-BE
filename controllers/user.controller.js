@@ -86,7 +86,6 @@ userController.getProfile = catchAsync(async (req, res, next) => {
 
 userController.updateProfile = catchAsync(async (req, res, next) => {
   const currentUserId = req.userId;
-  console.log("req body", req.body);
   const { name, email, password, address, contact } = req.body;
 
   let user = await User.findById(currentUserId);
@@ -141,7 +140,5 @@ userController.resetPassword = catchAsync(async (req, res, next) => {
     "New password has been sent to your email. Please check your mailbox."
   );
 });
-
-
 
 module.exports = userController;

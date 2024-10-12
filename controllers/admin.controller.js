@@ -111,8 +111,6 @@ adminController.updateProduct = catchAsync(async (req, res, next) => {
 
   const updateData = { name, price, old_price, image_url, popularity, rating };
 
-  console.log("UpdateData", updateData);
-
   const product = await Product.findByIdAndUpdate(id, updateData, {
     new: true,
   });
@@ -252,7 +250,6 @@ adminController.getCartDataForChart = catchAsync(async (req, res, next) => {
       },
     });
 
-
   if (!completedCarts || completedCarts.length === 0) {
     throw new AppError(
       404,
@@ -278,14 +275,13 @@ adminController.getCartDataForChart = catchAsync(async (req, res, next) => {
 
     return acc;
   }, {});
-  console.log(chartData)
 
   const chartDataArray = Object.entries(chartData).map(([monthYear, data]) => ({
     month: monthYear, // Tháng và năm
     count: data.count, // Số lượng giỏ hàng hoàn thành
     totalAmount: data.totalAmount, // Tổng tiền cho tháng đó
   }));
-  console.log(chartDataArray)
+
   sendResponse(
     res,
     200,

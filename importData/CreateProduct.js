@@ -67,9 +67,7 @@ const createProduct = async () => {
         imageIndex++;
       }
     }
-    console.log(productsToInsert);
     await Product.insertMany(productsToInsert);
-    console.log("Products added to the database:", productsToInsert);
   } catch (error) {
     console.log(error);
   }

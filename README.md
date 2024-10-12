@@ -12,35 +12,26 @@ Những tính năng này cải thiện trải nghiệm mua sắm, giúp người
 
 ### 2. Xem lịch sử đơn hàng (Order History)
 
-- **Theo dõi đơn hàng**: Người dùng có thể xem lịch sử mua hàng và tình trạng của các đơn hàng đã đặt (đã xử lý, đang giao hàng, đã hoàn thành).
-- **Chi tiết đơn hàng**: Cung cấp thông tin chi tiết về các sản phẩm đã mua, số lượng, giá cả và thời gian giao hàng dự kiến.
+- **Theo dõi đơn hàng**: Người dùng có thể xem lịch sử mua hàng và tình trạng của các đơn hàng đã đặt (đã xử lý, đã hoàn thành).
+- **Chi tiết đơn hàng**: Cung cấp thông tin chi tiết về các sản phẩm đã mua, số lượng, giá cả và thời gian mua hàng.
 
-### 3. Danh sách yêu thích (Wishlist)
-
-- **Lưu sản phẩm**: Người dùng có thể lưu lại các sản phẩm yêu thích để xem hoặc mua sau.
-- **Quản lý wishlist**: Có thể thêm hoặc xóa các sản phẩm trong danh sách yêu thích một cách dễ dàng.
-
-### 4. Giỏ hàng (Shopping Cart)
+### 3. Giỏ hàng (Shopping Cart)
 
 - **Thêm sản phẩm vào giỏ**: Người dùng có thể thêm sản phẩm vào giỏ hàng khi duyệt qua các danh mục.
 - **Chỉnh sửa giỏ hàng**: Sau khi thêm vào giỏ, họ có thể chỉnh sửa số lượng sản phẩm, xóa sản phẩm khỏi giỏ hàng hoặc tính toán lại tổng giá trị đơn hàng.
-- **Thanh toán**: Người dùng có thể thanh toán từ trang giỏ hàng và nhập thông tin thanh toán và giao hàng.
+- **Thanh toán**: Người dùng có thể thanh toán từ trang giỏ hàng và nhập thông tin thanh toán.
 
-### 5. Tùy chỉnh sản phẩm (Product Customization)
+### 4. Tùy chỉnh sản phẩm (Product Customization)
 
-Đối với một số sản phẩm, người dùng có thể tùy chọn các đặc điểm như màu sắc, kích thước, hoặc chất liệu trực tiếp trên trang sản phẩm trước khi thêm vào giỏ hàng.
+Đối với một số sản phẩm, người dùng có thể filter trực tiếp trên trang sản phẩm trước khi thêm vào giỏ hàng.
 
-### 6. Đánh giá sản phẩm (Product Reviews)
+### 5. Đánh giá sản phẩm (Product Reviews)
 
 Sau khi mua sản phẩm, người dùng có thể để lại đánh giá hoặc nhận xét về sản phẩm. Điều này giúp người dùng khác có thêm thông tin tham khảo trước khi mua.
 
-### 7. Chính sách đổi/trả hàng (Return/Exchange Policies)
+### 8. Hỗ trợ khách hàng (Contact Support)
 
-Người dùng có thể gửi yêu cầu đổi hoặc trả hàng thông qua tài khoản cá nhân nếu sản phẩm không phù hợp hoặc bị lỗi.
-
-### 8. Hỗ trợ khách hàng (Customer Support)
-
-Người dùng có thể liên hệ hỗ trợ thông qua hệ thống hỗ trợ trực tuyến, chat hoặc email. Các yêu cầu hỗ trợ có thể được lưu lại trong tài khoản để dễ dàng theo dõi.
+Người dùng có thể liên hệ hỗ trợ thông qua hệ thống hỗ trợ trực tuyến, chat hoặc email.
 
 # Endpoint APIs
 

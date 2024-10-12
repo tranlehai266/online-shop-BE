@@ -40,6 +40,3 @@ Người dùng có thể liên hệ hỗ trợ thông qua hệ thống hỗ tr�
 <<<<<<< HEAD
 ### LINK 
 funio.netlify.app
-=======
-
->>>>>>> b556281d695c6e9ac1610308d7691870e2dcb84a

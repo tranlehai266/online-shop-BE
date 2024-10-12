@@ -37,5 +37,9 @@ Sau khi mua sản phẩm, người dùng có thể để lại đánh giá hoặ
 
 Người dùng có thể liên hệ hỗ trợ thông qua hệ thống hỗ trợ trực tuyến, chat hoặc email.
 
+<<<<<<< HEAD
 ### LINK 
 funio.netlify.app
+=======
+
+>>>>>>> b556281d695c6e9ac1610308d7691870e2dcb84a

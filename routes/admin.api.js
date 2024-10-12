@@ -10,6 +10,7 @@ const {
   createCategory,
   createProduct,
   sendMail,
+  getCartDataForChart,
 } = require("../controllers/admin.controller");
 const {
   loginRequired,
@@ -26,5 +27,6 @@ router.put("/product/:id", loginRequired, adminRequired, updateProduct);
 router.put("/category/:id", loginRequired, adminRequired, updateCategory);
 router.post("/category", loginRequired, adminRequired, createCategory);
 router.post("/product", loginRequired, adminRequired, createProduct);
+router.get("/chart", loginRequired, adminRequired, getCartDataForChart);
 router.post("/contact", sendMail);
 module.exports = router;

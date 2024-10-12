@@ -235,4 +235,65 @@ adminController.sendMail = catchAsync(async (req, res, next) => {
   sendResponse(res, 200, true, null, null, "Email sent successfully.");
 });
 
+adminController.getCartDataForChart = catchAsync(async (req, res, next) => {
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+  const completedCarts = await ShoppingCart.find({
+    status: "completed",
+    updatedAt: { $gte: threeMonthsAgo },
+  })
+    .populate("user_id", "name email")
+    .populate({
+      path: "items",
+      populate: {
+        path: "product",
+        select: "name price",
+      },
+    });
+
+
+  if (!completedCarts || completedCarts.length === 0) {
+    throw new AppError(
+      404,
+      "Không tìm thấy giỏ hàng hoàn thành",
+      "Lỗi lấy dữ liệu biểu đồ"
+    );
+  }
+
+  const chartData = completedCarts.reduce((acc, cart) => {
+    const monthYear = `${cart.updatedAt.getFullYear()}-${
+      cart.updatedAt.getMonth() + 1
+    }`; // năm vs tháng
+    const totalAmount = cart.items.reduce(
+      (sum, item) => sum + item.product.price * item.quantity,
+      0
+    );
+
+    if (!acc[monthYear]) {
+      acc[monthYear] = { count: 0, totalAmount: 0 };
+    }
+    acc[monthYear].count += 1;
+    acc[monthYear].totalAmount += totalAmount;
+
+    return acc;
+  }, {});
+  console.log(chartData)
+
+  const chartDataArray = Object.entries(chartData).map(([monthYear, data]) => ({
+    month: monthYear, // Tháng và năm
+    count: data.count, // Số lượng giỏ hàng hoàn thành
+    totalAmount: data.totalAmount, // Tổng tiền cho tháng đó
+  }));
+  console.log(chartDataArray)
+  sendResponse(
+    res,
+    200,
+    true,
+    chartDataArray,
+    null,
+    "Lấy dữ liệu biểu đồ giỏ hàng hoàn thành thành công."
+  );
+});
+
 module.exports = adminController;

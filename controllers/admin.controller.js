@@ -234,12 +234,12 @@ adminController.sendMail = catchAsync(async (req, res, next) => {
 });
 
 adminController.getCartDataForChart = catchAsync(async (req, res, next) => {
-  const threeMonthsAgo = new Date();
-  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+  const currentDate = new Date();
+  const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
 
   const completedCarts = await ShoppingCart.find({
     status: "completed",
-    updatedAt: { $gte: threeMonthsAgo },
+    updatedAt: { $gte: startOfYear, $lte: currentDate },
   })
     .populate("user_id", "name email")
     .populate({
